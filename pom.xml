@@ -9,7 +9,7 @@
 		<version>2.4.2</version>
 		<relativePath />
 	</parent>
-	<groupId>com.guorltomit</groupId>
+	<groupId>es.sinjava</groupId>
 	<artifactId>superhero</artifactId>
 	<version>0.0.1</version>
 	<name>superhero</name>
