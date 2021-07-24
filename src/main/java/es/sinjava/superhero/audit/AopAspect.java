@@ -1,4 +1,4 @@
-package com.guorltomit.superhero.audit;
+package es.sinjava.superhero.audit;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -35,7 +35,7 @@ public class AopAspect {
 		}
 	}
 
-	@Around("@annotation(com.guorltomit.superhero.audit.SmartAudit)")
+	@Around("@annotation(es.sinjava.superhero.audit.SmartAudit)")
 	public Object auditing(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
 
