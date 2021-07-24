@@ -25,35 +25,35 @@ public class SuperheroController {
 
 	@GetMapping("/superhero/{id}")
 	public ResponseEntity<?> byId(@PathVariable Long id) {
-		log.debug("SuperHeroController {} byId", id);
+		log.info("SuperHeroController {} byId", id);
 		Optional<SuperheroBean> item = superHeroService.findById(id);
 		return ResponseEntity.of(item);
 	}
 
 	@GetMapping("/superhero")
 	public ResponseEntity<?> all() {
-		log.debug("SuperHeroController All");
+		log.info("SuperHeroController All");
 		Iterable<SuperheroBean> item = superHeroService.findAll();
 		return ResponseEntity.ok(item);
 	}
 
 	@PostMapping("/superhero")
 	public ResponseEntity<?> create(@RequestBody SuperheroBean superhero) {
-		log.debug("SuperHeroController create");
+		log.info("SuperHeroController create");
 		SuperheroBean item = superHeroService.save(superhero);
 		return ResponseEntity.ok(item);
 	}
 
 	@PutMapping("/superhero")
 	public ResponseEntity<?> update(@RequestBody SuperheroBean superhero) {
-		log.debug("SuperHeroController update");
+		log.info("SuperHeroController update");
 		SuperheroBean item = superHeroService.edit(superhero);
 		return ResponseEntity.ok(item);
 	}
 
 	@DeleteMapping("/superhero/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		log.debug("SuperHeroController {} byId", id);
+		log.info("SuperHeroController {} byId", id);
 		superHeroService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
