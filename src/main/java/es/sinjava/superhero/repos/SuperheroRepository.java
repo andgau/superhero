@@ -1,4 +1,4 @@
-package es.sinjava.superhero.service;
+package es.sinjava.superhero.repos;
 
 import java.util.List;
 
@@ -10,8 +10,9 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import es.sinjava.superhero.audit.SmartAudit;
 import es.sinjava.superhero.beans.SuperheroBean;
 
+// crea su propio controller... lo dejamos
 @RepositoryRestResource(collectionResourceRel = "superherobeans", path = "superheros")
-public interface SuperheroService extends PagingAndSortingRepository<SuperheroBean, Long> {
+public interface SuperheroRepository extends PagingAndSortingRepository<SuperheroBean, Long> {
 
 	@RestResource(rel = "name-contains", path = "name-contains")
 	@SmartAudit
