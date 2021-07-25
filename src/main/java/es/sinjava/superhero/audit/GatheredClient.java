@@ -3,11 +3,11 @@ package es.sinjava.superhero.audit;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -15,13 +15,34 @@ import org.springframework.web.client.RestTemplate;
 @Aspect
 public class GatheredClient {
 
+	public enum Strategy {
+		GET, POST, PUT, DELETE, ALLREST, CUSTOM
+	}
+
 	private RestTemplate restTemplate = new RestTemplate();
 	private String url;
 	private String host;
 
-	public GatheredClient(String urlAudit) {
+	// Por defecto todos los rest
+	private EnumSet<Strategy> strategies = EnumSet.of(Strategy.ALLREST);
 
+	private final static EnumSet<Strategy> ALLREST = EnumSet.of(Strategy.GET, Strategy.PUT, Strategy.POST,
+			Strategy.DELETE);
+
+	public GatheredClient(String urlAudit) {
+		this(urlAudit, ALLREST);
+	}
+
+	public GatheredClient(String urlAudit, Strategy strategiesIn) {
+		this(urlAudit, EnumSet.of(strategiesIn));
+	}
+
+	public GatheredClient(String urlAudit, EnumSet<Strategy> strategiesIn) {
 		url = urlAudit;
+		strategies = strategiesIn;
+		if (strategiesIn.contains(Strategy.ALLREST)) {
+			strategies.addAll(ALLREST);
+		}
 		try {
 			host = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
@@ -29,14 +50,15 @@ public class GatheredClient {
 			host = Thread.currentThread().getName();
 		}
 	}
-	
+
 	@Around("@annotation(org.springframework.web.bind.annotation.GetMapping)")
 	public Object auditingGet(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
 
 		Object proceed = joinPoint.proceed();
-
-		auditing(joinPoint, start);
+		if (strategies.contains(Strategy.GET)) {
+			auditing(joinPoint, start);
+		}
 		return proceed;
 	}
 
@@ -45,26 +67,30 @@ public class GatheredClient {
 		long start = System.currentTimeMillis();
 
 		Object proceed = joinPoint.proceed();
-
-		auditing(joinPoint, start);
+		if (strategies.contains(Strategy.POST)) {
+			auditing(joinPoint, start);
+		}
 		return proceed;
 	}
-	
+
 	@Around("@annotation(org.springframework.web.bind.annotation.PutMapping)")
 	public Object auditingPut(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
 
 		Object proceed = joinPoint.proceed();
-
-		auditing(joinPoint, start);
+		if (strategies.contains(Strategy.PUT)) {
+			auditing(joinPoint, start);
+		}
 		return proceed;
 	}
-	
+
 	@Around("@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
 	public Object auditingDelete(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
 		Object proceed = joinPoint.proceed();
-		auditing(joinPoint, start);
+		if (strategies.contains(Strategy.DELETE)) {
+			auditing(joinPoint, start);
+		}
 		return proceed;
 	}
 

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import es.sinjava.superhero.audit.GatheredClient;
-import es.sinjava.superhero.controllers.SuperheroController;
 import lombok.extern.log4j.Log4j2;
 
 @SpringBootApplication
@@ -20,7 +19,7 @@ public class SuperheroApplication {
 	@Bean
 	public GatheredClient getAudit(@Value("${audit.url}") String urlAudit) {
 		log.debug("Creado el cliente AOP contra {}", urlAudit);
-		GatheredClient gc = new GatheredClient(urlAudit);
+		GatheredClient gc = new GatheredClient(urlAudit, GatheredClient.Strategy.GET);
 		return gc;
 	}
 
