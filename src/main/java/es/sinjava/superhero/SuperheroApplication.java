@@ -1,4 +1,4 @@
-package com.guorltomit.superhero;
+package es.sinjava.superhero;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

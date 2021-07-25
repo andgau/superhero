@@ -1,5 +1,6 @@
-package com.guorltomit.superhero.audit;
+package es.sinjava.superhero.audit;
 
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -35,7 +37,7 @@ public class AopAspect {
 		}
 	}
 
-	@Around("@annotation(com.guorltomit.superhero.audit.SmartAudit)")
+	@Around("@annotation(es.sinjava.superhero.audit.SmartAudit)")
 	public Object auditing(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
 
@@ -48,9 +50,12 @@ public class AopAspect {
 		trace.setMethodName(joinPoint.getSignature().getName().replaceAll(trace.getClsName(), ""));
 		trace.setLap(executionTime);
 		trace.setCreated(LocalDateTime.now());
-
-		HttpEntity<TracedItem> request = new HttpEntity<>(trace);
-		restTemplate.postForObject(url, request, TracedItem.class);
+		try {
+			HttpEntity<TracedItem> request = new HttpEntity<>(trace);
+			restTemplate.postForObject(url, request, TracedItem.class);
+		} catch (RestClientException ex) {
+			System.out.printf("El gathered no está preparado %s %n", ex.getMessage());
+		}
 		return proceed;
 	}
 

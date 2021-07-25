@@ -1,4 +1,4 @@
-package com.guorltomit.superhero.beans;
+package es.sinjava.superhero.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

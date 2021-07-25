@@ -1,4 +1,4 @@
-package com.guorltomit.superhero;
+package es.sinjava.superhero;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -1,4 +1,4 @@
-package com.guorltomit.superhero.audit;
+package es.sinjava.superhero.audit;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
