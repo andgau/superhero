@@ -19,42 +19,42 @@ public abstract class BaseServiceImpl<T, ID, R extends CrudRepository<T, ID>> im
 	@Override
 	@SmartAudit
 	public T save(T t) {
-		log.debug("Save entity  {} ", t.getClass().getName());
+		log.trace("Save entity  {} ", t.getClass().getName());
 		return repo.save(t);
 	}
 
 	@Override
 	@SmartAudit
 	public Optional<T> findById(ID id) {
-		log.debug("Find entity  {} ", id);
+		log.trace("Find entity  {} ", id);
 		return repo.findById(id);
 	}
 
 	@Override
 	@SmartAudit
 	public Iterable<T> findAll() {
-		log.debug("Find All ");
+		log.trace("Find All ");
 		return repo.findAll();
 	}
 
 	@Override
 	@SmartAudit
 	public T edit(T t) {
-		log.debug("Update entity  {}", t.getClass().getName());
+		log.trace("Update entity  {}", t.getClass().getName());
 		return repo.save(t);
 	}
 
 	@Override
 	@SmartAudit
 	public void delete(T t) {
-		log.debug("Delete entity  {}", t.getClass());
+		log.trace("Delete entity  {}", t.getClass());
 		repo.delete(t);
 	}
 
 	@Override
 	@SmartAudit
 	public void deleteById(ID id) {
-		log.debug("Delete entity by Id  {}", id);
+		log.trace("Delete entity by Id  {}", id);
 		if (repo.existsById(id)) {
 			repo.deleteById(id);
 		}
